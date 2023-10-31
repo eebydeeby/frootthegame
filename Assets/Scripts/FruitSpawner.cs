@@ -14,6 +14,9 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private AudioSource[] _hitSound;
 	//Audio source to control
 	
+	public float countdown = 5f;
+	private bool timerIsRunning = true;
+	
 	private int randomFruit;
 	
 	// Spawns a fruit at the start of the scene
@@ -23,6 +26,25 @@ public class FruitSpawner : MonoBehaviour
 		_hitSound = GetComponents<AudioSource>();
     }
 	
+	void Update()
+	{
+		if (timerIsRunning == true)
+		{
+			if (countdown > 0)
+			{
+				countdown -= Time.deltaTime;
+				Debug.Log("Game NOT over!");
+				Debug.Log(countdown);					
+			}
+			else
+			{
+				timerIsRunning = false;
+				Destroy(gameObject);
+				Debug.Log("Game over!");
+			}
+		}
+	}
+
 	// Spawns random prefab
 	public void Spawn()
 	{
@@ -39,6 +61,7 @@ public class FruitSpawner : MonoBehaviour
 			Instantiate(berry);
 			break;		
 		}
+		countdown = 5f;
 	}
 	
 	// Handles SFX t0 be played -- called by other scripts
