@@ -1,4 +1,4 @@
-// Script for reacting to the current worm count - plays SFX and spawns fruit
+// Script for reacting to the current worm count - plays SFX and spawns fruit, handles game over
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private AudioSource[] _hitSound;
 	//Audio source to control
 	
-	public float countdown = 5f;
+	public float countdown = 30f;
 	private bool timerIsRunning = true;
 	
 	private int randomFruit;
@@ -27,20 +27,18 @@ public class FruitSpawner : MonoBehaviour
 		_hitSound = GetComponents<AudioSource>();
     }
 	
+	// Handles timer and manages game over scenario
 	void Update()
 	{
 		if (timerIsRunning == true)
 		{
 			if (countdown > 0)
 			{
-				countdown -= Time.deltaTime;
-				Debug.Log("Game NOT over!");
-				Debug.Log(countdown);					
+				countdown -= Time.deltaTime;			
 			}
 			else
 			{
 				timerIsRunning = false;
-				Destroy(gameObject);
 				SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
 			}
 		}
@@ -62,7 +60,7 @@ public class FruitSpawner : MonoBehaviour
 			Instantiate(berry);
 			break;		
 		}
-		countdown = 5f;
+		countdown = 30f;
 	}
 	
 	// Handles SFX t0 be played -- called by other scripts
