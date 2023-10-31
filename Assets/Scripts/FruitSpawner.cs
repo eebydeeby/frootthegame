@@ -39,6 +39,7 @@ public class FruitSpawner : MonoBehaviour
 			else
 			{
 				timerIsRunning = false;
+				Destroy(gameObject);
 				SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
 			}
 		}
