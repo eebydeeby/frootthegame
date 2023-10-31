@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 763c772b4cb154bcd9ef038a01384a63
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - greenSkin: {instanceID: 0}
+  - orangeSkin: {instanceID: 0}
+  - blueSkin: {instanceID: 0}
+  - _hitSound: {fileID: 8300000, guid: 1b061d3f3a0e34f809864eae63530e21, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
