@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FruitSpawner : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class FruitSpawner : MonoBehaviour
 			{
 				timerIsRunning = false;
 				Destroy(gameObject);
-				Debug.Log("Game over!");
+				SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
 			}
 		}
 	}

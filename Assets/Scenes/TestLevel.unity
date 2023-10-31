@@ -308,6 +308,7 @@ MonoBehaviour:
   pear: {fileID: 8006070820811170815, guid: accec9c29e4564c0189f1229fff29bfa, type: 3}
   _hitSound:
   - {fileID: 0}
+  countdown: 5
 --- !u!4 &822878882
 Transform:
   m_ObjectHideFlags: 0
