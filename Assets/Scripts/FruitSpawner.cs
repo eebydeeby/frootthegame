@@ -19,6 +19,7 @@ public class FruitSpawner : MonoBehaviour
 	private bool timerIsRunning = true;
 	
 	private int randomFruit;
+	public int score = -1;
 	
 	// Spawns a fruit at the start of the scene
     void Start()
@@ -48,6 +49,7 @@ public class FruitSpawner : MonoBehaviour
 	// Spawns random prefab
 	public void Spawn()
 	{
+		score++;
 		randomFruit = Random.Range(1,4);
 		switch (randomFruit)
 		{
