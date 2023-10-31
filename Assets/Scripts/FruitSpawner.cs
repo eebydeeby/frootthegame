@@ -15,7 +15,7 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private AudioSource[] _hitSound;
 	//Audio source to control
 	
-	public float countdown = 30f;
+	public float countdown = 15f;
 	private bool timerIsRunning = true;
 	
 	private int randomFruit;
@@ -27,7 +27,7 @@ public class FruitSpawner : MonoBehaviour
 		_hitSound = GetComponents<AudioSource>();
     }
 	
-	// Handles timer and manages game over scenario
+	// Handles timer and manages game over scenario.
 	void Update()
 	{
 		if (timerIsRunning == true)
@@ -60,7 +60,7 @@ public class FruitSpawner : MonoBehaviour
 			Instantiate(berry);
 			break;		
 		}
-		countdown = 30f;
+		countdown = 15f;
 	}
 	
 	// Handles SFX t0 be played -- called by other scripts
