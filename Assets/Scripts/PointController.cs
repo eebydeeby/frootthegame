@@ -1,25 +1,31 @@
+// Controls "worm points" (currently orbs) where worms will appear, handles player interaction with "worms"
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PointController : MonoBehaviour
 {
-	private GameObject parentObject;
-	private GameObject spawner;
-	private bool eating;
-	public Vector3 target;
+	private GameObject parentObject; // Calls back to parent fruit
+	private GameObject spawner; // Refers to fruit spawner object
+	private bool eating; // Variable to handle if worms are "eating" (vulnerable state)
+	public Vector3 target; // Camera vector
+	
 	[SerializeField] private Material greenSkin;
 	[SerializeField] private Material orangeSkin;
 	[SerializeField] private Material blueSkin;
+	// Different appearances for different states of worm points
 	
-    // Start is called before the first frame update
     void Start()
     {
 		parentObject = this.transform.parent.gameObject;
         target = GameObject.Find("Main Camera").transform.position;
-		Invoke(nameof(ChangeToEating), Random.Range(0, 7));
+		Invoke(nameof(ChangeToEating), Random.Range(0, 7)); // Starts countdown to "eating" state
     }
 
+	/* Handles input from player when clicking on worm point.
+	If the worm is "eating," reduces the current number of worms on the parent fruit.
+	Once it reaches zero, plays a different sound effect.
+	Immediately sets worm to not-eating state if clicked while eating.*/
 	void OnMouseDown()
 	{
 		if (eating == true) {
@@ -41,13 +47,14 @@ public class PointController : MonoBehaviour
 		changeSkin();
 	}
 
-    // Update is called once per frame
+	// Points worm points so they are always looking at camera (will make more sense with animated sprites)
     void LateUpdate()
     {
 		transform.LookAt(target);
     }
 	
-	void changeSkin()
+	// Checks current state of worm and changes appearance accordingly
+	void changeSkin() 
 	{
 		if (!eating) {
 			gameObject.GetComponent<Renderer>().material = orangeSkin;
@@ -57,6 +64,7 @@ public class PointController : MonoBehaviour
 		}
 	}
 	
+	// Changes state of worm
 	void ChangeToEating()
 	{
 		eating = true;

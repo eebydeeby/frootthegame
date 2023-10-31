@@ -1,3 +1,4 @@
+// Displays current number of worms on screen
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class WormText : MonoBehaviour
 	private GameObject fruit;
 	private int wormNumber;
 
-    // Update is called once per frame
+    // Gets parent object and attaches current worm count variable to text on screen
     void LateUpdate()
     {
 		fruit = GameObject.FindGameObjectWithTag("Fruit");
