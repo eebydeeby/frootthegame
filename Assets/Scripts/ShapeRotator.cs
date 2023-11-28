@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ShapeRotator : MonoBehaviour
 {
-	private GameObject spawner; // Refers to fruit spawner object
+	[SerializeField] private GameObject spawner; // Refers to fruit spawner object
 	private Vector3 startMousePos; // Handles where the mouse was at upon first click
 	private Vector3 newMousePos; // Handles current mouse position
 	private Vector3 rotateMousePos; // Difference between previous two variables, used to calculate rotation
@@ -49,7 +49,7 @@ public class ShapeRotator : MonoBehaviour
         }
     }
 	
-	// Once all the worms are cleared, destroy the fruit and spawn a new one.
+	// Once all the worms are cleared, destroy the fruit and spawn a new one. 	
 	void OnDestroy()
 	{
 		spawner.GetComponent<FruitSpawner>().Spawn();

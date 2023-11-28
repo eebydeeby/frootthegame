@@ -28,7 +28,7 @@ public class PointController : MonoBehaviour
 	Immediately sets worm to not-eating state if clicked while eating.*/
 	void OnMouseDown()
 	{
-		if (eating == true) {
+		if (eating == true && Time.timeScale != 0) {
 			this.transform.parent.gameObject.GetComponent<ShapeRotator>().currentWorms--;
 			if (this.transform.parent.gameObject.GetComponent<ShapeRotator>().currentWorms > 0)
 			{

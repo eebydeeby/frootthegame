@@ -12,6 +12,8 @@ public class WormText : MonoBehaviour
 	private int wormNumber;
 	private float timeLeft;
 	private int score;
+	private int lives;
+	private int level;
 
     // Gets parent object and attaches current worm count variable to text on screen
     void LateUpdate()
@@ -22,8 +24,10 @@ public class WormText : MonoBehaviour
 			wormNumber = fruit.GetComponent<ShapeRotator>().currentWorms;
 			timeLeft = spawner.GetComponent<FruitSpawner>().countdown;
 			score = spawner.GetComponent<FruitSpawner>().score;
-	        wormText.text = "Worms Remaining: " + wormNumber.ToString() + "\nTime Left: " + timeLeft.ToString() +
-				"\nScore: " + score;
+			lives = spawner.GetComponent<FruitSpawner>().lives;
+			level = spawner.GetComponent<FruitSpawner>().checkpointLevel;
+	        wormText.text = "Lives: " + lives + "\nWorms Remaining: " + wormNumber.ToString() + "\nTime Left: " + timeLeft.ToString() +
+				"\nLevel: " + level + "\nScore: " + score;
 		}
     }
 }
