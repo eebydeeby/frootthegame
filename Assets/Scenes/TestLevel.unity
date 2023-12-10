@@ -539,6 +539,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784979284}
   m_CullTransparentMesh: 1
+--- !u!1 &790659300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 790659301}
+  m_Layer: 0
+  m_Name: FirstAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &790659301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790659300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822878880
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,9 +608,14 @@ MonoBehaviour:
   berry: {fileID: 7423561632406845793, guid: 7cff30845eef0405495ca137608bc46c, type: 3}
   apple: {fileID: 3049828401469012541, guid: 5156e986aefac43c8ae6e8cb990784a3, type: 3}
   pear: {fileID: 8006070820811170815, guid: accec9c29e4564c0189f1229fff29bfa, type: 3}
+  isSlotOneTaken: 0
+  isSlotTwoTaken: 0
+  isSlotThreeTaken: 0
+  positionToSpawn: 0
   _hitSound:
   - {fileID: 0}
   pauseBg: {fileID: 1566444147}
+  difficulty: 5
   lives: 3
   checkpointLevel: 1
   countdown: 5
@@ -1652,6 +1688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04b5983eb78c4cd2afdb1ce21d49871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGameRestarting: 0
 --- !u!4 &1289238197
 Transform:
   m_ObjectHideFlags: 0
@@ -2160,3 +2197,4 @@ SceneRoots:
   - {fileID: 1566444151}
   - {fileID: 1289238197}
   - {fileID: 857315637}
+  - {fileID: 790659301}

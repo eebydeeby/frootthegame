@@ -6,37 +6,50 @@ using UnityEngine.SceneManagement;
 
 public class FruitSpawner : MonoBehaviour
 {
-
 	[SerializeField] private GameObject berry;
 	[SerializeField] private GameObject apple;
 	[SerializeField] private GameObject pear;
 	// Loads in prefab fruit to spawn
+
+	[SerializeField] private bool isSlotOneTaken;
+	[SerializeField] private bool isSlotTwoTaken;
+	[SerializeField] private bool isSlotThreeTaken;
+	[SerializeField] private int positionToSpawn;
+
+	private GameObject instance;
 	
 	[SerializeField] private AudioSource[] _hitSound;
 	// Audio source to control
 	[SerializeField] private GameObject pauseBg;
 	
+	public int difficulty;
+	
 	public int lives = 3;
 	public int checkpointLevel = 1; // Basic stage parameter
-	
+
 	public float countdown = 20f;
 	private bool timerIsRunning = true;
 	
 	private int randomFruit;
 	public int score = -1;
+
 	
 	// Spawns a fruit at the start of the scene
     void Start()
     {
 		Time.timeScale = 1;
-		Spawn();
 		_hitSound = GetComponents<AudioSource>();
+		difficulty = 3;
+		for (int i = 0; i < difficulty; i++)
+		{
+			Spawn();
+		}
     }
 	
 	// Handles timer and manages game over scenario.
 	void Update()
 	{
-	    if (Input.GetKeyDown(KeyCode.Space)) // Sequence for pausing ga,e
+	    if (Input.GetKeyDown(KeyCode.Space)) // Sequence for pausing game
 	    {
 	        if (Time.timeScale != 0)
 			{
@@ -81,6 +94,7 @@ public class FruitSpawner : MonoBehaviour
 	// Spawns random prefab
 	public void Spawn()
 	{
+		GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
 		if (score % 5 == 0 && checkpointLevel == 5)
 		{
 			Destroy(gameObject);
@@ -93,25 +107,58 @@ public class FruitSpawner : MonoBehaviour
 			countdown = 20 - (checkpointLevel * 2);
 			if (score > 0) { playHit(3); }
 		}
-		if (GameObject.FindGameObjectWithTag("Fruit") == null)
+		if (fruits.Length < difficulty)
+			orderFruit();
 			{
 			randomFruit = Random.Range(1,4);
 			switch (randomFruit)
 			{
 			case 1:
-				Instantiate(pear);
+				instance = Instantiate(pear);
+				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
 				break;
 			case 2:
-				Instantiate(apple);
+				instance = Instantiate(apple);
+				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
 				break;
 			case 3:
-				Instantiate(berry);
+				instance = Instantiate(berry);
+				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
 				break;		
 			}
 		}
 		countdown = 20 - (checkpointLevel * 2);
 	}
 	
+	public void orderFruit()
+	{
+		GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
+		foreach (GameObject fruit in fruits)
+		{
+			switch (fruit.GetComponent<ShapeRotator>().fruitOrder)
+			{
+				case 1:
+					isSlotOneTaken = true;
+					break;
+				case 2:
+					isSlotTwoTaken = true;
+					break;
+				case 3:
+					isSlotThreeTaken = true;
+					break;
+			}
+	}
+	if (!isSlotOneTaken){
+		positionToSpawn = 1;
+	}
+	else if (!isSlotTwoTaken){
+		positionToSpawn = 2;
+	}
+	else if (!isSlotThreeTaken){
+		positionToSpawn = 3;
+	}
+}
+
 	// Handles SFX t0 be played -- called by other scripts
 	public void playHit(int soundID)
 	{
@@ -138,5 +185,4 @@ public class FruitSpawner : MonoBehaviour
 		}
 		
 	}
-
 }

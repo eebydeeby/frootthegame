@@ -1012,7 +1012,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 3e4a798368d21486b81c30998479a8c0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3e4a798368d21486b81c30998479a8c0,
         type: 3}
@@ -1128,6 +1128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 0}
+  fruitOrder: 0
   currentWorms: 0
   rotateSpeed: 100
 --- !u!64 &3826478090923283343

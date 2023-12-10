@@ -6,8 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class MenuButton : MonoBehaviour
 {
+	public bool isGameRestarting = false;
+
     public void NewGameButton()
 	{
+		isGameRestarting = true;
 		SceneManager.LoadScene("TestLevel");
 	}
 	
@@ -18,6 +21,7 @@ public class MenuButton : MonoBehaviour
 	
     public void MainMenuButton()
 	{
+		isGameRestarting = true;
 		SceneManager.LoadScene("MainMenu");
 	}
 }
