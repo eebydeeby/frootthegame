@@ -35,7 +35,7 @@ public class FruitSpawner : MonoBehaviour
 
 	void Awake()
 	{
-		lives = 27;
+		lives = 3;
 		score = 0;
 	}
 
@@ -44,7 +44,7 @@ public class FruitSpawner : MonoBehaviour
     {
 		Time.timeScale = 1;
 		_hitSound = GetComponents<AudioSource>();
-		difficulty = 3;
+		difficulty = GameObject.Find("GameManager").GetComponent<GameManager>().difficulty;
 		for (int i = 0; i < difficulty; i++)
 		{
 			Spawn();

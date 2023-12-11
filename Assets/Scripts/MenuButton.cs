@@ -11,7 +11,7 @@ public class MenuButton : MonoBehaviour
     public void NewGameButton()
 	{
 		isGameRestarting = true;
-		SceneManager.LoadScene("TestLevel");
+		SceneManager.LoadScene("DifficultyPicker");
 	}
 	
     public void HowToPlayButton()
