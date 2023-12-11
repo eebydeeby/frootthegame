@@ -21,11 +21,11 @@ public class WormText : MonoBehaviour
 		fruit = GameObject.FindGameObjectWithTag("Fruit");
 		spawner = GameObject.Find("FruitSpawner");
 		if (fruit != null){
-			timeLeft = spawner.GetComponent<FruitSpawner>().countdown;
+			//timeLeft = spawner.GetComponent<FruitSpawner>().countdown;
 			score = spawner.GetComponent<FruitSpawner>().score;
 			lives = spawner.GetComponent<FruitSpawner>().lives;
 			level = spawner.GetComponent<FruitSpawner>().checkpointLevel;
-	        wormText.text = "Lives: " + lives + "\nTime Left: " + timeLeft.ToString() +
+	        wormText.text = "Lives: " + lives +
 				"\nLevel: " + level + "\nScore: " + score;
 		}
     }

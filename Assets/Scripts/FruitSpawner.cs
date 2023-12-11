@@ -27,7 +27,7 @@ public class FruitSpawner : MonoBehaviour
 	public int lives;
 	public int checkpointLevel = 1; // Basic stage parameter
 
-	public float countdown = 20f;
+	//public float countdown = 20f;
 	public bool timerIsRunning = true;
 	
 	private int randomFruit;
@@ -44,7 +44,7 @@ public class FruitSpawner : MonoBehaviour
     {
 		Time.timeScale = 1;
 		_hitSound = GetComponents<AudioSource>();
-		difficulty = 1;
+		difficulty = 3;
 		for (int i = 0; i < difficulty; i++)
 		{
 			Spawn();
@@ -108,7 +108,7 @@ public class FruitSpawner : MonoBehaviour
 		if (score % 5 == 0 && score != 0)
 		{
 			checkpointLevel++;
-			countdown = 20 - (checkpointLevel * 2);
+			//countdown = 20 - (checkpointLevel * 2);
 			if (score > 0) { playHit(3); }
 		}
 		if (fruits.Length < difficulty)
@@ -131,7 +131,7 @@ public class FruitSpawner : MonoBehaviour
 				break;		
 			}
 		}
-		countdown = 20 - (checkpointLevel * 2);
+		//countdown = 20 - (checkpointLevel * 2);
 	}
 	
 	public void orderFruit()

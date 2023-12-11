@@ -36,6 +36,7 @@ public class ShapeRotator : MonoBehaviour
 		difficulty = spawnerScript.difficulty;
 		maxWorms = Random.Range(3, 7); // Random number of worms to start
 		currentWorms = maxWorms;
+		fruitCountdown = 20 - (spawnerScript.checkpointLevel * 2);
 	}
 
 	void Start()
@@ -81,11 +82,11 @@ public class ShapeRotator : MonoBehaviour
 			}
 			else
 			{
-				if (spawnerScript.lives > 0 && currentWorms > 0) // Checks if player has more than 0 lives when countdown is over...
+				if (spawnerScript.lives > 0) // Checks if player has more than 0 lives when countdown is over...
 				{
-					spawnerScript.lives++;
+					spawnerScript.lives--;
 					spawnerScript.playHit(6);
-					fruitCountdown = 200 - (spawnerScript.checkpointLevel * 2); // Resets timer
+					fruitCountdown = 20 - (spawnerScript.checkpointLevel * 2); // Resets timer
 				}
 				else // ...And loads game over scene if not
 				{
@@ -102,7 +103,7 @@ public class ShapeRotator : MonoBehaviour
 		fruitText.transform.rotation = Quaternion.Euler(0,0,0);
 		fruitText.transform.position = new Vector3(((this.gameObject.transform.position.x)),
 			((this.gameObject.transform.position.y)-4), 0);
-		fruitString.text = "Time left: " + fruitCountdown.ToString("#.00") + "\nWorms left: ";
+		fruitString.text = "Time left: " + fruitCountdown.ToString("#.00") + "\nWorms left: " + currentWorms;
 	}
 	
 	// Once all the worms are cleared, destroy the fruit and spawn a new one. 	
