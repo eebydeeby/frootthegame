@@ -21,7 +21,6 @@ public class WormText : MonoBehaviour
 		fruit = GameObject.FindGameObjectWithTag("Fruit");
 		spawner = GameObject.Find("FruitSpawner");
 		if (fruit != null){
-			//wormNumber = fruit.GetComponent<ShapeRotator>().currentWorms;
 			timeLeft = spawner.GetComponent<FruitSpawner>().countdown;
 			score = spawner.GetComponent<FruitSpawner>().score;
 			lives = spawner.GetComponent<FruitSpawner>().lives;

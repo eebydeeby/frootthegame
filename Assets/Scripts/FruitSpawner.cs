@@ -11,9 +11,9 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private GameObject pear;
 	// Loads in prefab fruit to spawn
 
-	[SerializeField] private bool isSlotOneTaken;
-	[SerializeField] private bool isSlotTwoTaken;
-	[SerializeField] private bool isSlotThreeTaken;
+	public bool isSlotOneTaken;
+	public bool isSlotTwoTaken;
+	public bool isSlotThreeTaken;
 	[SerializeField] private int positionToSpawn;
 
 	private GameObject instance;
@@ -24,22 +24,27 @@ public class FruitSpawner : MonoBehaviour
 	
 	public int difficulty;
 	
-	public int lives = 3;
+	public int lives;
 	public int checkpointLevel = 1; // Basic stage parameter
 
 	public float countdown = 20f;
-	private bool timerIsRunning = true;
+	public bool timerIsRunning = true;
 	
 	private int randomFruit;
-	public int score = -1;
+	public int score;
 
-	
+	void Awake()
+	{
+		lives = 27;
+		score = 0;
+	}
+
 	// Spawns a fruit at the start of the scene
     void Start()
     {
 		Time.timeScale = 1;
 		_hitSound = GetComponents<AudioSource>();
-		difficulty = 3;
+		difficulty = 1;
 		for (int i = 0; i < difficulty; i++)
 		{
 			Spawn();
@@ -66,7 +71,7 @@ public class FruitSpawner : MonoBehaviour
 				playHit(5);
 			}
 	    }
-		
+		/*
 		if (timerIsRunning == true) // Handles countdown sequence
 		{
 			if (countdown > 0)
@@ -88,7 +93,7 @@ public class FruitSpawner : MonoBehaviour
 					SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
 				}
 			}
-		}
+		}*/
 	}
 
 	// Spawns random prefab
@@ -100,7 +105,6 @@ public class FruitSpawner : MonoBehaviour
 			Destroy(gameObject);
 			SceneManager.LoadScene("YouWin");
 		}
-		score++;
 		if (score % 5 == 0 && score != 0)
 		{
 			checkpointLevel++;
@@ -108,9 +112,9 @@ public class FruitSpawner : MonoBehaviour
 			if (score > 0) { playHit(3); }
 		}
 		if (fruits.Length < difficulty)
-			orderFruit();
 			{
 			randomFruit = Random.Range(1,4);
+			orderFruit();
 			switch (randomFruit)
 			{
 			case 1:
