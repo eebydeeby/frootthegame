@@ -1,4 +1,5 @@
 // Script for button used in game over scene
+// Works by assinging a difficulty to parameter to the gamemanager object, which carries it onto the testlevel scene
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

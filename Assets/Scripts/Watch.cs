@@ -7,17 +7,17 @@ public class Watch : MonoBehaviour
     private GameObject spawner;
     private FruitSpawner spawnerScript;
     private float watchCountDown;
-    private GameObject particle;
+    private GameObject particle; // Particle effect
     private int speed;
 
     void Awake()
     {
-        watchCountDown = 10.0f;
+        watchCountDown = 10.0f; // Time before powerup despawns
     }
 
-    void Start()
+    void Start() 
     {
-        if (Random.Range(0f, 2f) > 1)
+        if (Random.Range(0f, 2f) > 1) // Spawns powerup on either side of speed and sets direction for movement
         {
             speed = -1;
             gameObject.transform.position = new Vector3(32.0f, (Random.Range(-8.0f, 8.0f)), 12.3f);
@@ -36,9 +36,10 @@ public class Watch : MonoBehaviour
     {
         particle.transform.position = this.transform.position;
 		particle.GetComponent<ParticleSystem>().Play();
-        Time.timeScale = 0.2f;
-        spawnerScript.slowTime = 2.0f;
+        Time.timeScale = 0.1f; // Slows down game delta time
+        spawnerScript.slowTime = 1.0f; // Fruit spawner checks if this reaches 0 and sets game speed back to normal if so
         Destroy(gameObject);
+        spawnerScript.playHit(7);
     }
 
     // Update is called once per frame

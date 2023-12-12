@@ -1,4 +1,5 @@
 // Script for reacting to the current worm count - plays SFX and spawns fruit, handles game over
+// Handles most of the game logic during the main level
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +12,15 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private GameObject pear;
 	// Loads in prefab fruit to spawn
 
-	[SerializeField] private GameObject heart;
-	[SerializeField] private GameObject watch;
+	[SerializeField] private GameObject heart; // Heart powerup prefab
+	[SerializeField] private GameObject watch; // Stopwatch powerup prefab
 
 	public bool isSlotOneTaken;
 	public bool isSlotTwoTaken;
 	public bool isSlotThreeTaken;
 	[SerializeField] private int positionToSpawn;
+	// Checks to see what fruit slots are taken, and spawns a fruit in which ever one is free
+	// Difficulty increases the number of fruit slots
 
 	private GameObject instance;
 	
@@ -25,21 +28,20 @@ public class FruitSpawner : MonoBehaviour
 	// Audio source to control
 	[SerializeField] private GameObject pauseBg;
 	
-	public int difficulty;
+	public int difficulty; // Parameter which adjusts the number of fruit to spawn
 	
 	public int lives;
-	public int checkpointLevel = 1; // Basic stage parameter
+	public int checkpointLevel = 1; // Basic stage parameter, reduces timer countdown as levels progress
 
-	[SerializeField] private float powerCountdown;
+	[SerializeField] private float powerCountdown; // Countdown until next powerup is spawned
 
-	//public float countdown = 20f;
-	public bool timerIsRunning = true;
+	public bool timerIsRunning = true; // Decides whether or not to progress with the normal fruit countdown process
 	
-	private int randomFruit;
+	private int randomFruit; // Variable for deciding which fruit prefab to spawn
 	public int score;
 
-	public float slowTime;
-	public float unpauseTime;
+	public float slowTime; // Slows down delta time when this variable is aboce zero - reduces down to 0 over time
+	public float unpauseTime; // Stores whether or not time was slowed down when game is paused
 
 	void Awake()
 	{
@@ -84,13 +86,13 @@ public class FruitSpawner : MonoBehaviour
 			}
 	    }
 
-		if (timerIsRunning == true) // Handles countdown sequence
+		if (timerIsRunning == true) // Handles countdown sequences
 		{
 			if (powerCountdown > 0)
 			{
 				powerCountdown -= Time.deltaTime;
 			}
-			else
+			else // Spawns powerups
 			{
 				if ((Random.Range(0.0f, 2.0f)) > 1.0f)
 				{
@@ -106,7 +108,7 @@ public class FruitSpawner : MonoBehaviour
 			{
 				slowTime -= Time.deltaTime;
 			}
-			if (slowTime <= 0)
+			if (slowTime <= 0) // Returns game speed to normal once slowdown powerup time is over
 			{
 				Time.timeScale = 1f;
 			}
@@ -168,7 +170,7 @@ public class FruitSpawner : MonoBehaviour
 					break;
 			}
 	}
-	if (!isSlotOneTaken){
+	if (!isSlotOneTaken){ // Checks if a slot/space is empty and spawns a fruit there if so
 		positionToSpawn = 1;
 	}
 	else if (!isSlotTwoTaken){
@@ -179,7 +181,7 @@ public class FruitSpawner : MonoBehaviour
 	}
 	}
 
-	// Handles SFX t0 be played -- called by other scripts
+	// Handles SFX to be played -- called by other scripts
 	public void playHit(int soundID)
 	{
 		switch (soundID)
@@ -204,6 +206,9 @@ public class FruitSpawner : MonoBehaviour
 				break;
 			case 7:
 				_hitSound[6].Play();
+				break;
+			case 8:
+				_hitSound[7].Play();
 				break;
 		}
 		

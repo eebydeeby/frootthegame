@@ -7,17 +7,17 @@ public class Heart : MonoBehaviour
     private GameObject spawner;
     private FruitSpawner spawnerScript;
     private float heartCountDown;
-    private GameObject particle;
+    private GameObject particle; // Particle effect
     private int speed;
 
     void Awake()
     {
-        heartCountDown = 10.0f;
+        heartCountDown = 10.0f; // Time before powerup despawns
     }
 
     void Start()
     {
-        if (Random.Range(0f, 2f) > 1)
+        if (Random.Range(0f, 2f) > 1) // Spawns powerup on either side of speed and sets direction for movement
         {
             speed = -1;
             gameObject.transform.position = new Vector3(32.0f, (Random.Range(-8.0f, 8.0f)), 12.3f);
@@ -36,8 +36,9 @@ public class Heart : MonoBehaviour
     {
     	particle.transform.position = this.transform.position;
 		particle.GetComponent<ParticleSystem>().Play();
-        spawnerScript.lives++;
+        spawnerScript.lives++; // Adds one to player lives
         Destroy(gameObject);
+        spawnerScript.playHit(7);
     }
 
     // Update is called once per frame

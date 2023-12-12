@@ -9,35 +9,50 @@ public class ShapeRotator : MonoBehaviour
 {
 	[SerializeField] private GameObject spawner; // Refers to fruit spawner object
 	[SerializeField] private FruitSpawner spawnerScript;
+
 	private int difficulty;
-	public int fruitOrder;
+	public int fruitOrder; // Parameter for checking where fruit has spawned, checked by fruitspawner script
+
 	private Vector3 startMousePos; // Handles where the mouse was at upon first click
 	private Vector3 newMousePos; // Handles current mouse position
 	private Vector3 rotateMousePos; // Difference between previous two variables, used to calculate rotation
+
 	private int maxWorms; // Starting number of worms for each fruit
 	public int currentWorms; // Current number of worms
-	public float fruitCountdown;
+	public float fruitCountdown; // Current lifespan of fruit: If this reaches 0, player loses a life
+
 	public float rotateSpeed; // How fast the fruit should rotate
 	private bool dragged; // If the fruit is being dragged or no, ie, if player clicked on fruit
+	
 	private bool gameIsShuttingDown;
 	public GameObject restarterObject;
 	public LoseButton restarter;
+	// Loads lose button script: parameters are set there to see if game is restarting
+	// Used to help make sure this script deletes fruit properly between scenes
+
 	public GameObject fruitText;
 	public TMP_Text fruitString;
-	public GameObject particle;
+
+
+	public GameObject particle; // Particle effect used when fruit is destroyed
 	
 	void Awake()
 	{
 		restarterObject = GameObject.Find("ButtonController");
 		restarter = restarterObject.GetComponent<LoseButton>();
+
 		spawner = GameObject.Find("FruitSpawner");
 		spawnerScript = spawner.GetComponent<FruitSpawner>();
+
 		fruitText = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
 		fruitString = fruitText.GetComponent<TMP_Text>();
+
 		difficulty = spawnerScript.difficulty;
+
 		maxWorms = Random.Range(3, 7); // Random number of worms to start
-		currentWorms = maxWorms;
-		fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2);
+		currentWorms = maxWorms; // Sets current worms to max number of worms when fruit is spawned
+
+		fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2); // Sets fruit lifespawn
 		particle = GameObject.Find("FruitPop");
 	}
 
@@ -51,7 +66,7 @@ public class ShapeRotator : MonoBehaviour
 	
 	void OnMouseDown()
 	{
-		dragged = true;
+		dragged = true; // Set if the fruit is currently being dragged by the player
 		startMousePos = Input.mousePosition;
 	}
 	
@@ -68,6 +83,7 @@ public class ShapeRotator : MonoBehaviour
 			particle.transform.position = this.transform.position;
 			particle.GetComponent<ParticleSystem>().Play();
 			Destroy(this.gameObject);
+			// Sets the particle effect to location of the fruit and plays it when fruit is destroyed
 		}
 		
 		// If fruit is being dragged, start rotating the fruit according to difference between curent and original position of cursor.
@@ -102,7 +118,7 @@ public class ShapeRotator : MonoBehaviour
 		}
     }
 
-	void LateUpdate()
+	void LateUpdate() // Handles position and rotation of fruit stat text below fruit model
 	{
 		fruitText.transform.rotation = Quaternion.Euler(0,0,0);
 		fruitText.transform.position = new Vector3(((this.gameObject.transform.position.x)),
@@ -132,7 +148,7 @@ public class ShapeRotator : MonoBehaviour
 		}
 	}
 
-	void SetPosition()
+	void SetPosition() // Checks what order the fruit should be in and places it depending on its place and game difficulty
 	{
 		if (fruitOrder == 0 || fruitOrder == 1){
 			switch (difficulty)
