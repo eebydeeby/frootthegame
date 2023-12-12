@@ -36,8 +36,8 @@ public class Watch : MonoBehaviour
     {
         particle.transform.position = this.transform.position;
 		particle.GetComponent<ParticleSystem>().Play();
-        Time.timeScale = 0.25f;
-        spawnerScript.slowTime = 2.5f;
+        Time.timeScale = 0.2f;
+        spawnerScript.slowTime = 2.0f;
         Destroy(gameObject);
     }
 

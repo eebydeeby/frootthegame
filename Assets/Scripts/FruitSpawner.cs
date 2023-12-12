@@ -12,6 +12,7 @@ public class FruitSpawner : MonoBehaviour
 	// Loads in prefab fruit to spawn
 
 	[SerializeField] private GameObject heart;
+	[SerializeField] private GameObject watch;
 
 	public bool isSlotOneTaken;
 	public bool isSlotTwoTaken;
@@ -50,7 +51,7 @@ public class FruitSpawner : MonoBehaviour
     void Start()
     {
 		Time.timeScale = 1;
-		powerCountdown = Random.Range(10.0f, 60.0f);
+		powerCountdown = Random.Range(5.0f, 15.0f);
 		_hitSound = GetComponents<AudioSource>();
 		difficulty = GameObject.Find("GameManager").GetComponent<GameManager>().difficulty;
 		for (int i = 0; i < difficulty; i++)
@@ -64,11 +65,12 @@ public class FruitSpawner : MonoBehaviour
 	{
 	    if (Input.GetKeyDown(KeyCode.Space)) // Sequence for pausing game
 	    {
-	        if (Time.timeScale != 0)
+	        if (Time.timeScale > 0)
 			{
 				unpauseTime = Time.timeScale;
 				_hitSound[4].Stop();
-				Time.timeScale = 0; // Freezes game time
+				Time.timeScale = 0f; // Freezes game time
+				timerIsRunning = false;
 				pauseBg.SetActive(true); // Shows pause menu
 				playHit(4);
 			}
@@ -76,6 +78,7 @@ public class FruitSpawner : MonoBehaviour
 			{
 				_hitSound[3].Stop();
 				Time.timeScale = unpauseTime;
+				timerIsRunning = true;
 				pauseBg.SetActive(false);
 				playHit(5);
 			}
@@ -89,7 +92,14 @@ public class FruitSpawner : MonoBehaviour
 			}
 			else
 			{
-				Instantiate(heart);
+				if ((Random.Range(0.0f, 2.0f)) > 1.0f)
+				{
+					Instantiate(heart);
+				}
+				else
+				{
+					Instantiate(watch);
+				}
 				powerCountdown = Random.Range(10.0f, 60.0f);
 			}
 			if (slowTime > 0)
@@ -98,7 +108,7 @@ public class FruitSpawner : MonoBehaviour
 			}
 			if (slowTime <= 0)
 			{
-				Time.timeScale = 0.5f;
+				Time.timeScale = 1f;
 			}
 		}
 	}

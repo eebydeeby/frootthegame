@@ -74,7 +74,7 @@ public class ShapeRotator : MonoBehaviour
         if (dragged == true)
 		{
 			newMousePos = Input.mousePosition;
-			rotateMousePos = (Vector3.Normalize(startMousePos - newMousePos) * rotateSpeed);
+			rotateMousePos = (Vector3.Normalize(startMousePos - newMousePos) * (rotateSpeed/Time.timeScale));
         	this.transform.Rotate(-rotateMousePos.y * Time.deltaTime, rotateMousePos.x * Time.deltaTime, 0, Space.World);
         }
 
