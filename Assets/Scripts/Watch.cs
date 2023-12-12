@@ -39,7 +39,7 @@ public class Watch : MonoBehaviour
         Time.timeScale = 0.1f; // Slows down game delta time
         spawnerScript.slowTime = 1.0f; // Fruit spawner checks if this reaches 0 and sets game speed back to normal if so
         Destroy(gameObject);
-        spawnerScript.playHit(7);
+        spawnerScript.playHit(8);
     }
 
     // Update is called once per frame

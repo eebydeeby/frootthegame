@@ -38,7 +38,7 @@ public class Heart : MonoBehaviour
 		particle.GetComponent<ParticleSystem>().Play();
         spawnerScript.lives++; // Adds one to player lives
         Destroy(gameObject);
-        spawnerScript.playHit(7);
+        spawnerScript.playHit(8);
     }
 
     // Update is called once per frame
