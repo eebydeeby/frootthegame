@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heart : MonoBehaviour
+public class Watch : MonoBehaviour
 {
     private GameObject spawner;
     private FruitSpawner spawnerScript;
-    private float heartCountDown;
+    private float watchCountDown;
     private GameObject particle;
     private int speed;
 
     void Awake()
     {
-        heartCountDown = 10.0f;
+        watchCountDown = 10.0f;
     }
 
     void Start()
@@ -34,9 +34,10 @@ public class Heart : MonoBehaviour
 
     void OnMouseDown()
     {
-    	particle.transform.position = this.transform.position;
+        particle.transform.position = this.transform.position;
 		particle.GetComponent<ParticleSystem>().Play();
-        spawnerScript.lives++;
+        Time.timeScale = 0.25f;
+        spawnerScript.slowTime = 2.5f;
         Destroy(gameObject);
     }
 
@@ -45,9 +46,9 @@ public class Heart : MonoBehaviour
     {
     	if (spawnerScript.timerIsRunning == true) // Handles countdown sequence
 		{
-			if (heartCountDown > 0)
+			if (watchCountDown > 0f)
 			{
-				heartCountDown -= Time.deltaTime;			
+				watchCountDown -= Time.deltaTime;			
 			}
 			else
 			{

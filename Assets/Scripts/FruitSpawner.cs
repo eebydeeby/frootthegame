@@ -11,6 +11,8 @@ public class FruitSpawner : MonoBehaviour
 	[SerializeField] private GameObject pear;
 	// Loads in prefab fruit to spawn
 
+	[SerializeField] private GameObject heart;
+
 	public bool isSlotOneTaken;
 	public bool isSlotTwoTaken;
 	public bool isSlotThreeTaken;
@@ -27,11 +29,16 @@ public class FruitSpawner : MonoBehaviour
 	public int lives;
 	public int checkpointLevel = 1; // Basic stage parameter
 
+	[SerializeField] private float powerCountdown;
+
 	//public float countdown = 20f;
 	public bool timerIsRunning = true;
 	
 	private int randomFruit;
 	public int score;
+
+	public float slowTime;
+	public float unpauseTime;
 
 	void Awake()
 	{
@@ -43,6 +50,7 @@ public class FruitSpawner : MonoBehaviour
     void Start()
     {
 		Time.timeScale = 1;
+		powerCountdown = Random.Range(10.0f, 60.0f);
 		_hitSound = GetComponents<AudioSource>();
 		difficulty = GameObject.Find("GameManager").GetComponent<GameManager>().difficulty;
 		for (int i = 0; i < difficulty; i++)
@@ -58,6 +66,7 @@ public class FruitSpawner : MonoBehaviour
 	    {
 	        if (Time.timeScale != 0)
 			{
+				unpauseTime = Time.timeScale;
 				_hitSound[4].Stop();
 				Time.timeScale = 0; // Freezes game time
 				pauseBg.SetActive(true); // Shows pause menu
@@ -66,34 +75,32 @@ public class FruitSpawner : MonoBehaviour
 			else
 			{
 				_hitSound[3].Stop();
-				Time.timeScale = 1;
+				Time.timeScale = unpauseTime;
 				pauseBg.SetActive(false);
 				playHit(5);
 			}
 	    }
-		/*
+
 		if (timerIsRunning == true) // Handles countdown sequence
 		{
-			if (countdown > 0)
+			if (powerCountdown > 0)
 			{
-				countdown -= Time.deltaTime;			
+				powerCountdown -= Time.deltaTime;
 			}
 			else
 			{
-				if (lives > 0) // Checks if player has more than 0 lives when countdown is over...
-				{
-					lives--;
-					playHit(6);
-					countdown = 20 - (checkpointLevel * 2); // Resets timer
-				}
-				else // ...And loads game over scene if not
-				{
-					timerIsRunning = false;
-					Destroy(gameObject);
-					SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
-				}
+				Instantiate(heart);
+				powerCountdown = Random.Range(10.0f, 60.0f);
 			}
-		}*/
+			if (slowTime > 0)
+			{
+				slowTime -= Time.deltaTime;
+			}
+			if (slowTime <= 0)
+			{
+				Time.timeScale = 0.5f;
+			}
+		}
 	}
 
 	// Spawns random prefab
@@ -131,7 +138,6 @@ public class FruitSpawner : MonoBehaviour
 				break;		
 			}
 		}
-		//countdown = 20 - (checkpointLevel * 2);
 	}
 	
 	public void orderFruit()
@@ -161,7 +167,7 @@ public class FruitSpawner : MonoBehaviour
 	else if (!isSlotThreeTaken){
 		positionToSpawn = 3;
 	}
-}
+	}
 
 	// Handles SFX t0 be played -- called by other scripts
 	public void playHit(int soundID)
