@@ -25,7 +25,6 @@ public class ShapeRotator : MonoBehaviour
 	public GameObject fruitText;
 	public TMP_Text fruitString;
 	public GameObject particle;
-	public ParticleSystem ps;
 	
 	void Awake()
 	{
