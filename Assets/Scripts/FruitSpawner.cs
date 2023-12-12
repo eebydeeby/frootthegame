@@ -186,6 +186,9 @@ public class FruitSpawner : MonoBehaviour
 			case 6:
 				_hitSound[5].Play();
 				break;
+			case 7:
+				_hitSound[6].Play();
+				break;
 		}
 		
 	}

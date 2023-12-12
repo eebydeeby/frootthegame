@@ -16,7 +16,7 @@ public class ShapeRotator : MonoBehaviour
 	private Vector3 rotateMousePos; // Difference between previous two variables, used to calculate rotation
 	private int maxWorms; // Starting number of worms for each fruit
 	public int currentWorms; // Current number of worms
-	[SerializeField] private float fruitCountdown;
+	public float fruitCountdown;
 	public float rotateSpeed; // How fast the fruit should rotate
 	private bool dragged; // If the fruit is being dragged or no, ie, if player clicked on fruit
 	private bool gameIsShuttingDown;
@@ -24,6 +24,8 @@ public class ShapeRotator : MonoBehaviour
 	public LoseButton restarter;
 	public GameObject fruitText;
 	public TMP_Text fruitString;
+	public GameObject particle;
+	public ParticleSystem ps;
 	
 	void Awake()
 	{
@@ -36,7 +38,8 @@ public class ShapeRotator : MonoBehaviour
 		difficulty = spawnerScript.difficulty;
 		maxWorms = Random.Range(3, 7); // Random number of worms to start
 		currentWorms = maxWorms;
-		fruitCountdown = 20 - (spawnerScript.checkpointLevel * 2);
+		fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2);
+		particle = GameObject.Find("FruitPop");
 	}
 
 	void Start()
@@ -63,6 +66,8 @@ public class ShapeRotator : MonoBehaviour
     {	
 		if (currentWorms == 0)
 		{
+			particle.transform.position = this.transform.position;
+			particle.GetComponent<ParticleSystem>().Play();
 			Destroy(this.gameObject);
 		}
 		
@@ -86,7 +91,7 @@ public class ShapeRotator : MonoBehaviour
 				{
 					spawnerScript.lives--;
 					spawnerScript.playHit(6);
-					fruitCountdown = 20 - (spawnerScript.checkpointLevel * 2); // Resets timer
+					fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2); // Resets timer
 				}
 				else // ...And loads game over scene if not
 				{

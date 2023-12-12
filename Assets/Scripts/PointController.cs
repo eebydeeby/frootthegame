@@ -40,6 +40,10 @@ public class PointController : MonoBehaviour
 			}
 			eating = false;
 		}
+		else if (eating == false && Time.timeScale != 0) {
+			GameObject.Find("FruitSpawner").GetComponent<FruitSpawner>().playHit(7);
+			this.transform.parent.gameObject.GetComponent<ShapeRotator>().fruitCountdown -= 5.0f;
+		}
 	}
 
 	void Update()
