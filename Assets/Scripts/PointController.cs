@@ -63,7 +63,6 @@ public class PointController : NetworkBehaviour
 	public void RegisterClickServerRpc(){
 		if (IsHost){
 		eating.Value = false;
-		Debug.Log("Eating value changed!");
 		}
 	}
 

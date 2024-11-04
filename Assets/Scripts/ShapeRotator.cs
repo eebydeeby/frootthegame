@@ -156,7 +156,6 @@ public class ShapeRotator : NetworkBehaviour
 				}
 				spawner.GetComponent<FruitSpawner>().orderFruit();
 				spawner.GetComponent<FruitSpawner>().SpawnServerRpc();
-				//spawner.GetComponent<FruitSpawner>().SpawnClientRpc();
 			}
 		}
 	}
