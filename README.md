@@ -9,7 +9,7 @@ Currently the hame only runs on local networks.
 
 ## How to run multiplayer
 1. Get the game running with two clients. You can use the clone manager in Parrelsync to do this from within the editor.
-   To activate it, go to the Toolbar at the top, Parrelsync -> Clones Manager. When the window is open, click on Add New Clone.
+   To activate it, go to the Toolbar at the top, Parrelsync -> Clones Manager. When the window is open, click on Add New Clone.  
    ![Image](https://i.imgur.com/WwmaX8K.png)
 3. Start the scene in the main menu.
 4. Click on "multiplayer"
