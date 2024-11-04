@@ -14,5 +14,5 @@ Currently the hame only runs on local networks.
 3. Start the scene in the main menu.
 4. Click on "multiplayer"
 5. One client should click on "Host" and the other "Multiplayer."
-6. The lobbu text should indicate that the players are connected and ready to play.
+6. The lobby text should indicate that the players are connected and ready to play.
 7. The host should click on "Start Game."
