@@ -36,7 +36,7 @@ public class Heart : MonoBehaviour
     {
     	particle.transform.position = this.transform.position;
 		particle.GetComponent<ParticleSystem>().Play();
-        spawnerScript.lives++; // Adds one to player lives
+        spawnerScript.lives.Value++; // Adds one to player lives
         Destroy(gameObject);
         spawnerScript.playHit(8);
     }

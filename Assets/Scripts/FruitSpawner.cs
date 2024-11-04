@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
-public class FruitSpawner : MonoBehaviour
+public class FruitSpawner : NetworkBehaviour
 {
-	[SerializeField] private GameObject berry;
-	[SerializeField] private GameObject apple;
-	[SerializeField] private GameObject pear;
+	[SerializeField] private NetworkObject berry;
+	[SerializeField] private NetworkObject apple;
+	[SerializeField] private NetworkObject pear;
 	// Loads in prefab fruit to spawn
 
 	[SerializeField] private GameObject heart; // Heart powerup prefab
@@ -22,7 +23,10 @@ public class FruitSpawner : MonoBehaviour
 	// Checks to see what fruit slots are taken, and spawns a fruit in which ever one is free
 	// Difficulty increases the number of fruit slots
 
-	private GameObject instance;
+	private NetworkObject instance;
+	private NetworkPrefab networkPrefab;
+	private NetworkObject networkInstance;
+	private NetworkObject instanceNetworkObject;
 	
 	[SerializeField] private AudioSource[] _hitSound;
 	// Audio source to control
@@ -30,7 +34,7 @@ public class FruitSpawner : MonoBehaviour
 	
 	public int difficulty; // Parameter which adjusts the number of fruit to spawn
 	
-	public int lives;
+	public NetworkVariable<int> lives = new NetworkVariable<int>(3);
 	public int checkpointLevel = 1; // Basic stage parameter, reduces timer countdown as levels progress
 
 	[SerializeField] private float powerCountdown; // Countdown until next powerup is spawned
@@ -38,15 +42,15 @@ public class FruitSpawner : MonoBehaviour
 	public bool timerIsRunning = true; // Decides whether or not to progress with the normal fruit countdown process
 	
 	private int randomFruit; // Variable for deciding which fruit prefab to spawn
-	public int score;
+	public NetworkVariable<int> score = new NetworkVariable<int>(0);
 
 	public float slowTime; // Slows down delta time when this variable is aboce zero - reduces down to 0 over time
 	public float unpauseTime; // Stores whether or not time was slowed down when game is paused
 
 	void Awake()
 	{
-		lives = 3;
-		score = 0;
+		lives.Value = 3;
+		score.Value = 0;
 	}
 
 	// Spawns a fruit at the start of the scene
@@ -58,7 +62,8 @@ public class FruitSpawner : MonoBehaviour
 		difficulty = GameObject.Find("GameManager").GetComponent<GameManager>().difficulty;
 		for (int i = 0; i < difficulty; i++)
 		{
-			Spawn();
+			print("Starting...");
+			SpawnServerRpc();
 		}
     }
 	
@@ -116,42 +121,63 @@ public class FruitSpawner : MonoBehaviour
 	}
 
 	// Spawns random prefab
-	public void Spawn()
+	[ServerRpc (RequireOwnership = false)]
+	public void SpawnServerRpc()
 	{
-		GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
-		if (score % 5 == 0 && checkpointLevel == 5)
-		{
-			Destroy(gameObject);
-			SceneManager.LoadScene("YouWin");
-		}
-		if (score % 5 == 0 && score != 0)
-		{
-			checkpointLevel++;
-			//countdown = 20 - (checkpointLevel * 2);
-			if (score > 0) { playHit(3); }
-		}
-		if (fruits.Length < difficulty)
+		if (IsServer){
+			List<NetworkObject> fruits = new List<NetworkObject>();
+
+			foreach (var i  in NetworkManager.Singleton.SpawnManager.SpawnedObjects){
+				NetworkObject networkObject = i.Value;
+				if (networkObject.gameObject.CompareTag("Fruit")) {
+					fruits.Add(networkObject);
+				}
+			}
+
+			if (score.Value % 5 == 0 && checkpointLevel == 5)
 			{
-			randomFruit = Random.Range(1,4);
-			orderFruit();
-			switch (randomFruit)
+				if (IsHost){
+					Destroy(gameObject);
+				}
+				SceneManager.LoadScene("YouWin");
+			}
+			if (score.Value % 5 == 0 && score.Value != 0)
 			{
-			case 1:
-				instance = Instantiate(pear);
-				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
-				break;
-			case 2:
-				instance = Instantiate(apple);
-				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
-				break;
-			case 3:
-				instance = Instantiate(berry);
-				instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
-				break;		
+				checkpointLevel++;
+				//countdown = 20 - (checkpointLevel * 2);
+				if (score.Value > 0) { playHit(3); }
+			}
+			if (fruits.Count < difficulty)
+				print("Less fruit than difficulty detcted. Spawning...");
+				{
+				randomFruit = Random.Range(1,4);
+				orderFruit();
+				Debug.Log($"The fruit is {randomFruit}");
+				switch (randomFruit)
+				{
+				case 1:
+					instance = Instantiate(pear);
+					Debug.Log(instance);
+					instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
+					instance.GetComponent<NetworkObject>().Spawn();
+					break;
+				case 2:
+					instance = Instantiate(apple);
+					Debug.Log(instance);
+					instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
+					instance.GetComponent<NetworkObject>().Spawn();
+					break;
+				case 3:
+					instance = Instantiate(berry);
+					Debug.Log(instance);
+					instance.GetComponent<ShapeRotator>().fruitOrder = positionToSpawn;
+					instance.GetComponent<NetworkObject>().Spawn();
+					break;		
+				}
 			}
 		}
 	}
-	
+
 	public void orderFruit()
 	{
 		GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
@@ -174,10 +200,10 @@ public class FruitSpawner : MonoBehaviour
 		positionToSpawn = 1;
 	}
 	else if (!isSlotTwoTaken){
-		positionToSpawn = 2;
+		positionToSpawn = 1;
 	}
 	else if (!isSlotThreeTaken){
-		positionToSpawn = 3;
+		positionToSpawn = 1;
 	}
 	}
 
@@ -214,3 +240,4 @@ public class FruitSpawner : MonoBehaviour
 		
 	}
 }
+

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.Netcode;
 
-public class ShapeRotator : MonoBehaviour
+public class ShapeRotator : NetworkBehaviour
 {
 	[SerializeField] private GameObject spawner; // Refers to fruit spawner object
 	[SerializeField] private FruitSpawner spawnerScript;
@@ -34,6 +35,7 @@ public class ShapeRotator : MonoBehaviour
 	public TMP_Text fruitString;
 
 
+
 	public GameObject particle; // Particle effect used when fruit is destroyed
 	
 	void Awake()
@@ -47,6 +49,7 @@ public class ShapeRotator : MonoBehaviour
 		fruitText = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
 		fruitString = fruitText.GetComponent<TMP_Text>();
 
+
 		difficulty = spawnerScript.difficulty;
 
 		maxWorms = Random.Range(3, 7); // Random number of worms to start
@@ -59,7 +62,7 @@ public class ShapeRotator : MonoBehaviour
 	void Start()
 	{
 		if (fruitOrder == 0){
-			Destroy(gameObject);
+			GetComponent<NetworkObject>().Despawn();
 		}
 		SetPosition();
 	}
@@ -80,9 +83,13 @@ public class ShapeRotator : MonoBehaviour
     {	
 		if (currentWorms == 0)
 		{
+			print("No worms left!");
 			particle.transform.position = this.transform.position;
 			particle.GetComponent<ParticleSystem>().Play();
-			Destroy(this.gameObject);
+			if (IsHost){
+				print("It's me, the server!");
+				GetComponent<NetworkObject>().Despawn();
+			}
 			// Sets the particle effect to location of the fruit and plays it when fruit is destroyed
 		}
 		
@@ -102,16 +109,18 @@ public class ShapeRotator : MonoBehaviour
 			}
 			else
 			{
-				if (spawnerScript.lives > 0) // Checks if player has more than 0 lives when countdown is over...
+				if (spawnerScript.lives.Value > 0) // Checks if player has more than 0 lives when countdown is over...
 				{
-					spawnerScript.lives--;
+					spawnerScript.lives.Value--;
 					spawnerScript.playHit(6);
 					fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2); // Resets timer
 				}
 				else // ...And loads game over scene if not
 				{
 					spawnerScript.timerIsRunning = false;
-					Destroy(gameObject);
+					if (IsHost){
+						GetComponent<NetworkObject>().Despawn();
+					}
 					SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
 				}
 			}
@@ -123,28 +132,32 @@ public class ShapeRotator : MonoBehaviour
 		fruitText.transform.rotation = Quaternion.Euler(0,0,0);
 		fruitText.transform.position = new Vector3(((this.gameObject.transform.position.x)),
 			((this.gameObject.transform.position.y)-4), 0);
-		fruitString.text = "Time left: " + fruitCountdown.ToString("#.00") + "\nWorms left: " + currentWorms;
+		fruitString.text += ("\nTime left: " + fruitCountdown.ToString("#.00") + "\nWorms left: " + currentWorms);
 	}
 	
-	// Once all the worms are cleared, destroy the fruit and spawn a new one. 	
-	void OnDestroy()
+	// Once all the worms are cleared, destroy the fruit and spawn a new one.
+	public override void OnNetworkDespawn()
 	{
-		spawnerScript.score++;
-		if (this.gameIsShuttingDown == false && restarter.isGameRestarting == false){
-			switch (fruitOrder)
-			{
-				case 1:
-					spawner.GetComponent<FruitSpawner>().isSlotOneTaken = false;
-					break;
-				case 2:
-					spawner.GetComponent<FruitSpawner>().isSlotTwoTaken = false;
-					break;
-				case 3:
-					spawner.GetComponent<FruitSpawner>().isSlotThreeTaken = false;
-					break;
+		if (IsHost){
+			spawnerScript.score.Value++;
+			Debug.Log("FRUIT IS BEING RESPAWNED NOW!!!!");
+			if (this.gameIsShuttingDown == false && restarter.isGameRestarting == false){
+				switch (fruitOrder)
+				{
+					case 1:
+						spawner.GetComponent<FruitSpawner>().isSlotOneTaken = false;
+						break;
+					case 2:
+						spawner.GetComponent<FruitSpawner>().isSlotTwoTaken = false;
+						break;
+					case 3:
+						spawner.GetComponent<FruitSpawner>().isSlotThreeTaken = false;
+						break;
+				}
+				spawner.GetComponent<FruitSpawner>().orderFruit();
+				spawner.GetComponent<FruitSpawner>().SpawnServerRpc();
+				//spawner.GetComponent<FruitSpawner>().SpawnClientRpc();
 			}
-			spawner.GetComponent<FruitSpawner>().orderFruit();
-			spawner.GetComponent<FruitSpawner>().Spawn();
 		}
 	}
 

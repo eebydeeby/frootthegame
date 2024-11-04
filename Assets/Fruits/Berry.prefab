@@ -384,7 +384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1443191060351588107
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1348,6 +1348,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3826478090923283343}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e4a798368d21486b81c30998479a8c0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5306480793460470583}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e4a798368d21486b81c30998479a8c0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8945890318432910383}
   m_SourcePrefab: {fileID: 100100000, guid: 3e4a798368d21486b81c30998479a8c0, type: 3}
 --- !u!1 &7423561632406845793 stripped
 GameObject:
@@ -1377,6 +1385,7 @@ MonoBehaviour:
   restarter: {fileID: 0}
   fruitText: {fileID: 0}
   fruitString: {fileID: 0}
+  particle: {fileID: 0}
 --- !u!64 &3826478090923283343
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1399,6 +1408,56 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 3e4a798368d21486b81c30998479a8c0, type: 3}
+--- !u!114 &5306480793460470583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423561632406845793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &-8945890318432910383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7423561632406845793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!4 &7804203059447620571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3e4a798368d21486b81c30998479a8c0,
