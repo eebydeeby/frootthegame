@@ -5,7 +5,9 @@
 It is a 3D "whack-a-mole" game with asymmetrical mutiplayer. The host rotates fruit and the client clicks on worms to "whack" them.  
 
 You can run the game from within the Unity editor using Parrelsync (which should already be installed), or you can build it and run two separate clients.  
-Currently the hame only runs on local networks.
+Currently the hame only runs on local networks.  
+
+**The current project is running on Unity 2022.3.9f1.**  
 
 ## How to run multiplayer
 1. Get the game running with two clients. You can use the clone manager in Parrelsync to do this from within the editor.
