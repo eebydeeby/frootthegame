@@ -140,7 +140,6 @@ public class ShapeRotator : NetworkBehaviour
 	{
 		if (IsHost){
 			spawnerScript.score.Value++;
-			Debug.Log("FRUIT IS BEING RESPAWNED NOW!!!!");
 			if (this.gameIsShuttingDown == false && restarter.isGameRestarting == false){
 				switch (fruitOrder)
 				{

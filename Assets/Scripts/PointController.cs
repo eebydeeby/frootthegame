@@ -39,21 +39,9 @@ public class PointController : NetworkBehaviour
 			Debug.Log("Clicked by client!");
 			ReduceWormsServerRpc();
 			if (eating.Value == true && Time.timeScale != 0) {
-				
-				if (this.transform.parent.gameObject.GetComponent<ShapeRotator>().currentWorms > 0)
-				{
-					//GameObject.Find("FruitSpawner").GetComponent<FruitSpawner>().playHit(1);
-					return;
-				}
-				else if (this.transform.parent.gameObject.GetComponent<ShapeRotator>().currentWorms == 0)
-				{
-					//GameObject.Find("FruitSpawner").GetComponent<FruitSpawner>().playHit(2);
-					return;
-				}
 				RegisterClickServerRpc();
 			}
 			else if (eating.Value == false && Time.timeScale != 0) {
-				//GameObject.Find("FruitSpawner").GetComponent<FruitSpawner>().playHit(7);
 				ReduceCountdownServerRpc();
 			}
 		}

@@ -7,12 +7,6 @@ public class LobbyText : MonoBehaviour
 {
     [SerializeField] public GameObject nvm;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {

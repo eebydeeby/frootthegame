@@ -8,6 +8,10 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private float CountDown;
     private GameObject nvm;    
 
+    public void Start(){
+        Debug.Log(GetFullPath(transform));
+    }
+
     private void OnClientConnected(ulong clientId)
     {
         print("Client connected with id: " + clientId);
@@ -50,5 +54,16 @@ public class LobbyManager : NetworkBehaviour
         {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
+    }
+
+    // Recursive function to get the full path
+    private string GetFullPath(Transform current)
+    {
+        // Base case: if there's no parent, we're at the root
+        if (current.parent == null)
+            return current.name;
+
+        // Recursive case: get the parent's path and add this object's name
+        return GetFullPath(current.parent) + "/" + current.name;
     }
 }
