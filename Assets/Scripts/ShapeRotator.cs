@@ -94,30 +94,34 @@ public class ShapeRotator : NetworkBehaviour
 			this.transform.Rotate(-rotateMousePos.y * Time.deltaTime, rotateMousePos.x * Time.deltaTime, 0, Space.World);
 		}
 
-		if (spawnerScript.timerIsRunning == true) // Handles countdown sequence
+		/*Handles countdown sequence*/
+		if (timerIsRunning == false)
 		{
-			if (fruitCountdown > 0)
-			{
-				fruitCountdown -= Time.deltaTime;			
-			}
-			else
-			{
-				if (spawnerScript.lives.Value > 0) // Checks if player has more than 0 lives when countdown is over...
-				{
-					spawnerScript.lives.Value--;
-					spawnerScript.playHit(6);
-					fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2); // Resets timer
-				}
-				else // ...And loads game over scene if not
-				{
-					spawnerScript.timerIsRunning = false;
-					if (IsHost){
-						GetComponent<NetworkObject>().Despawn();
-					}
-					SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
-				}
-			}
+			return; // Stops the series of checks if the timer isn't running.
 		}
+
+		if (powerCountdown > 0)
+		{
+			powerCountdown -= Time.deltaTime;
+			return;
+		}
+
+		powerCountdown = Random.Range(10.0f, 60.0f);
+
+		if ((Random.Range(0.0f, 2.0f)) > 1.0f)
+		{
+			Instantiate(heart);
+			return;
+		}
+
+		Instantiate(watch);
+
+		if (slowTime > 0)
+		{
+			slowTime -= Time.deltaTime;
+			return;
+		}
+		Time.timeScale = 1f;
 	}
 
 	void LateUpdate()
