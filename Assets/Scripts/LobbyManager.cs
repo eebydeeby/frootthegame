@@ -48,8 +48,6 @@ public class LobbyManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        CountDown = 3.0f;
-
         if(IsServer)
         {
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;

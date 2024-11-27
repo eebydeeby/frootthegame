@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Watch : MonoBehaviour
 {
-    private GameObject spawner;
-    private FruitSpawner spawnerScript;
-    private float watchCountDown;
-    private GameObject particle; // Particle effect
     private int speed;
+    private float watchCountDown;
+    
+    private FruitSpawner spawnerScript;
+    private GameObject particle; // Particle effect
+    private GameObject spawner;
+
 
     void Awake()
     {

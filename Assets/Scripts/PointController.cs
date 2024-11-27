@@ -6,16 +6,16 @@ using Unity.Netcode;
 
 public class PointController : NetworkBehaviour
 {
-	private GameObject parentObject; // Calls back to parent fruit
-	private GameObject spawner; // Refers to fruit spawner object
-	private NetworkVariable<bool> eating = new NetworkVariable<bool>(false); // Variable to handle if worms are "eating" (vulnerable state)
 	public Vector3 target; // Camera vector
-	private NetworkObject localPlayer;
-	
 	[SerializeField] private Material greenSkin;
 	[SerializeField] private Material orangeSkin;
 	[SerializeField] private Material blueSkin;
-	// Different appearances for different states of worm points
+
+	private GameObject parentObject; // Calls back to parent fruit
+	private GameObject spawner; // Refers to fruit spawner object
+	private NetworkVariable<bool> eating = new NetworkVariable<bool>(false); // Variable to handle if worms are "eating" (vulnerable state)
+	private NetworkObject localPlayer;
+	
 	
     void Start()
     {

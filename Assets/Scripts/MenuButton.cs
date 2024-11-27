@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 public class MenuButton : NetworkBehaviour
 {
 	public bool isGameRestarting = false;
-	private GameObject nvm;
 	public NetworkObject localPlayer;
+	private GameObject nvm;
 
 	public void Awake()
 	{
@@ -46,10 +46,6 @@ public class MenuButton : NetworkBehaviour
 		{
 			GameObject.Find("GameManager").GetComponent<GameManager>().difficulty = 1;
 			NetworkManager.SceneManager.LoadScene("OnlineLevel", LoadSceneMode.Single);
-		}
-		else 
-		{
-			print ("something went wrong: ");
 		}
 	}
 

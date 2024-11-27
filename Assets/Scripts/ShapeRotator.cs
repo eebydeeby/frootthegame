@@ -1,6 +1,7 @@
 // Handles status of fruit, namely rotation and worm status
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -8,35 +9,27 @@ using Unity.Netcode;
 
 public class ShapeRotator : NetworkBehaviour
 {
-	[SerializeField] private GameObject spawner; // Refers to fruit spawner object
-	[SerializeField] private FruitSpawner spawnerScript;
-
 	private int difficulty;
 	public int fruitOrder; // Parameter for checking where fruit has spawned, checked by fruitspawner script
-
 	private Vector3 startMousePos; // Handles where the mouse was at upon first click
 	private Vector3 newMousePos; // Handles current mouse position
 	private Vector3 rotateMousePos; // Difference between previous two variables, used to calculate rotation
-
 	private int maxWorms; // Starting number of worms for each fruit
 	public int currentWorms; // Current number of worms
 	public float fruitCountdown; // Current lifespan of fruit: If this reaches 0, player loses a life
-
 	public float rotateSpeed; // How fast the fruit should rotate
 	private bool dragged; // If the fruit is being dragged or no, ie, if player clicked on fruit
-	
 	private bool gameIsShuttingDown;
+	private Vector3 fruitTextPosition;
+	private StringBuilder fruitStringBuilder;
+
+	[SerializeField] private GameObject spawner; // Refers to fruit spawner object
+	[SerializeField] private FruitSpawner spawnerScript;
 	public GameObject restarterObject;
-	public LoseButton restarter;
-	// Loads lose button script: parameters are set there to see if game is restarting
-	// Used to help make sure this script deletes fruit properly between scenes
-
 	public GameObject fruitText;
-	public TMP_Text fruitString;
-
-
-
 	public GameObject particle; // Particle effect used when fruit is destroyed
+	public LoseButton restarter; // Loads lose button script: parameters are set there to see if game is restarting, used to help make sure this script deletes fruit properly between scenes
+	public TMP_Text fruitString;
 	
 	void Awake()
 	{
@@ -57,6 +50,8 @@ public class ShapeRotator : NetworkBehaviour
 
 		fruitCountdown = 33 - (spawnerScript.checkpointLevel * 2); // Sets fruit lifespawn
 		particle = GameObject.Find("FruitPop");
+
+		fruitStringBuilder = new StringBuilder();
 	}
 
 	void Start()
@@ -79,27 +74,25 @@ public class ShapeRotator : NetworkBehaviour
 		dragged = false;
 	}
 
-    void Update()
-    {	
+	void Update()
+	{	
 		if (currentWorms == 0)
 		{
-			print("No worms left!");
 			particle.transform.position = this.transform.position;
 			particle.GetComponent<ParticleSystem>().Play();
 			if (IsHost){
-				print("It's me, the server!");
 				GetComponent<NetworkObject>().Despawn();
 			}
 			// Sets the particle effect to location of the fruit and plays it when fruit is destroyed
 		}
 		
 		// If fruit is being dragged, start rotating the fruit according to difference between curent and original position of cursor.
-        if (dragged == true)
+		if (dragged == true)
 		{
 			newMousePos = Input.mousePosition;
 			rotateMousePos = (Vector3.Normalize(startMousePos - newMousePos) * (rotateSpeed/Time.timeScale));
-        	this.transform.Rotate(-rotateMousePos.y * Time.deltaTime, rotateMousePos.x * Time.deltaTime, 0, Space.World);
-        }
+			this.transform.Rotate(-rotateMousePos.y * Time.deltaTime, rotateMousePos.x * Time.deltaTime, 0, Space.World);
+		}
 
 		if (spawnerScript.timerIsRunning == true) // Handles countdown sequence
 		{
@@ -125,14 +118,27 @@ public class ShapeRotator : NetworkBehaviour
 				}
 			}
 		}
-    }
+	}
 
-	void LateUpdate() // Handles position and rotation of fruit stat text below fruit model
+	void LateUpdate()
 	{
-		fruitText.transform.rotation = Quaternion.Euler(0,0,0);
-		fruitText.transform.position = new Vector3(((this.gameObject.transform.position.x)),
-			((this.gameObject.transform.position.y)-4), 0);
-		fruitString.text += ("\nTime left: " + fruitCountdown.ToString("#.00") + "\nWorms left: " + currentWorms);
+		// Cache transform to avoid repeated access to this.gameObject.transform
+		Transform fruitTransform = this.gameObject.transform;
+
+		// Set fruitText position once per frame (no need for repeated new Vector3 calls)
+		fruitTextPosition.x = fruitTransform.position.x;
+		fruitTextPosition.y = fruitTransform.position.y - 4;
+		fruitTextPosition.z = 0;
+
+		fruitText.transform.position = fruitTextPosition;
+		fruitText.transform.rotation = Quaternion.identity; // Quaternion.Euler(0, 0, 0) is equivalent to Quaternion.identity
+
+		// Use StringBuilder to avoid repeated string allocations
+		fruitStringBuilder.Clear();
+		fruitStringBuilder.AppendLine("Time left: " + fruitCountdown.ToString("#.00"));
+		fruitStringBuilder.AppendLine("Worms left: " + currentWorms);
+
+		fruitString.text = fruitStringBuilder.ToString();  // Set the final string once
 	}
 	
 	// Once all the worms are cleared, destroy the fruit and spawn a new one.
@@ -191,8 +197,8 @@ public class ShapeRotator : NetworkBehaviour
 		}
 	}
 
-    void OnApplicationQuit()
-    {
-    	gameIsShuttingDown = true;
-    }
+	void OnApplicationQuit()
+	{
+		gameIsShuttingDown = true;
+	}
 }

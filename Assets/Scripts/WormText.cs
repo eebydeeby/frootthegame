@@ -9,9 +9,9 @@ public class WormText : NetworkBehaviour
 {
 	public TextMeshProUGUI wormText;
 	private ShapeRotator fruit;
+	private GameObject spawner;
 	private NetworkVariable<float> fruitTime = new NetworkVariable<float>(0.0f);
 	private NetworkVariable<int> fruitWorms = new NetworkVariable<int>(0);
-	private GameObject spawner;
 	private NetworkVariable<int> wormNumber = new NetworkVariable<int>(0);
 	private NetworkVariable<float> timeLeft = new NetworkVariable<float>(0.0f);
 	private NetworkVariable<int> score = new NetworkVariable<int>(0);

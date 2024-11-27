@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Heart : MonoBehaviour
 {
-    private GameObject spawner;
-    private FruitSpawner spawnerScript;
     private float heartCountDown;
-    private GameObject particle; // Particle effect
     private int speed;
+    private GameObject spawner;    
+    private GameObject particle; // Particle effect
+    private FruitSpawner spawnerScript;
+
 
     void Awake()
     {
