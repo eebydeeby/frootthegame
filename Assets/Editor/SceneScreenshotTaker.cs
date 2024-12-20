@@ -1,3 +1,4 @@
+// Editor tool to load and screenshot scenes as a batch
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
